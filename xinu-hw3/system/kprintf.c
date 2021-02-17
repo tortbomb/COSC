@@ -33,14 +33,12 @@ syscall kgetc(void)
 	}
 	
 	
-	while(regptr->fr&PL011_FR_RXFE == 1){
+	while(regptr->fr&PL011_FR_RXFE){
 		continue;
 	}
 	return (int)regptr->dr;
 
 
-
-    return SYSERR;
 }
 
 /**
@@ -54,13 +52,12 @@ syscall kcheckc(void)	//DONE DONE DONE?
 
     // TODO: Check the unget buffer and the UART for characters.
 
-	if((ungetArray[0] == '\0') && (regptr->fr&PL011_FR_RXFE == 1)){
+	if((ungetArray[0] == '\0') && (regptr->fr&PL011_FR_RXFE)){
 		return 0;
 	} else {
 		return 1;
 	}
 	
-    return SYSERR;
 }
 
 /**
@@ -79,8 +76,8 @@ syscall kungetc(unsigned char c)		//DONE DONE DONE?
 			return c;
 		}
 	}
+	return c;
 
-    return SYSERR;
 }
 
 
@@ -104,15 +101,13 @@ syscall kputc(uchar c)
 
     // TODO: Check UART flags register.
     //       Once the Transmitter FIFO is not full, send character c.
-	while(regptr->fr&PL011_FR_TXFF == 1){
-		
+	while(regptr->fr &PL011_FR_TXFF){
 		continue;
 	}
 	
+	regptr->dr = (int) c;
+	return c;
 	
-	return regptr->dr = (int) c;
-
-    return SYSERR;
 }
 
 /**

@@ -33,6 +33,21 @@ void testcases(void)
     {
 
         // TODO: Test your operating system!
+		case 'a':
+		kcheckc();
+		break;
+		
+		case 'b':
+		kgetc();
+		break;
+		
+		case 'c':
+		kungetc(c);
+		break;
+		
+		case 'd':
+		kputc(c);
+		break;
 
     default:
         kprintf("Hello Xinu World!\r\n");

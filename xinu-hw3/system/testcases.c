@@ -1,3 +1,12 @@
+/*
+ * COSC 3250 - Project 3
+ * Testcases file for the xinu-hw3 assignment.
+ * @author [Sam Torti] [Jack Bielinski]
+ * Instructor [Sabirat Rubya]
+ * TA-BOT:MAILTO [samuel.torti@marquette.edu] [jackson.bielinski@marquette.edu]
+ * */
+
+
 /**
  * @file testcases.c
  * @provides testcases
@@ -25,6 +34,7 @@ devcall putc(int dev, char c)
 void testcases(void)
 {
     int c;
+	int b;
 
     kprintf("===TEST BEGIN===\r\n");
 
@@ -34,20 +44,29 @@ void testcases(void)
 
         // TODO: Test your operating system!
 		case 'a':
-		kcheckc();
+		b = kcheckc();		//returns T or F if there is an available character in buffer or UART
+		kprintf("0 (false) or 1 (true): %d\n", b);
 		break;
 		
-		case 'b':
-		kgetc();
+		case 'b':		//returns the char casted as an int
+		b = kgetc();
+		kprintf("Char as int: %d\n", b);
 		break;
 		
 		case 'c':
-		kungetc(c);
+		kungetc(c);		//places char in buffer array
 		break;
 		
 		case 'd':
-		kputc(c);
+		kputc(c);	//puts in char, returns it
 		break;
+		
+		case 'e':	//calling kgetc() with a char in the buffer array, should return the value in buffer
+		kungetc(c);
+		b = kgetc();
+		kprintf("Array contains: %d\n", b);
+		break;
+		
 
     default:
         kprintf("Hello Xinu World!\r\n");

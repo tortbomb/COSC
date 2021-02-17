@@ -1,3 +1,11 @@
+/*
+ * COSC 3250 - Project 3
+ * kprintf file for the xinu-hw3 assignment containting 4 useful functions to interface with UART.
+ * @author [Sam Torti] [Jack Bielinski]
+ * Instructor [Sabirat Rubya]
+ * TA-BOT:MAILTO [samuel.torti@marquette.edu] [jackson.bielinski@marquette.edu]
+ * */
+
 /**
  * @file kprintf.c
  */
@@ -21,6 +29,7 @@ static unsigned char ungetArray[UNGETMAX];
 syscall kgetc(void)
 {
     volatile struct pl011_uart_csreg *regptr;
+	char c;
 
     /* Pointer to the UART control and status registers.  */
     regptr = (struct pl011_uart_csreg *)0x3F201000;
@@ -34,9 +43,10 @@ syscall kgetc(void)
 	
 	
 	while(regptr->fr&PL011_FR_RXFE){
-		continue;
+		
 	}
-	return (int)regptr->dr;
+	c = regptr->dr;
+	return c;
 
 
 }
@@ -73,9 +83,11 @@ syscall kungetc(unsigned char c)		//DONE DONE DONE?
 	for(i = 0; i < UNGETMAX; i++){
 		if(ungetArray[i] == '\0'){
 			ungetArray[i] = c;
+			kprintf("Char placed in array.\n");
 			return c;
 		}
 	}
+	kprintf("Char not placed in array.\n");
 	return c;
 
 }
@@ -102,7 +114,7 @@ syscall kputc(uchar c)
     // TODO: Check UART flags register.
     //       Once the Transmitter FIFO is not full, send character c.
 	while(regptr->fr &PL011_FR_TXFF){
-		continue;
+		
 	}
 	
 	regptr->dr = (int) c;

@@ -28,6 +28,17 @@ syscall kgetc(void)
     // TODO: First, check the unget buffer for a character.
     //       Otherwise, check UART flags register, and
     //       once the receiver is not empty, get character c.
+	if(!(ungetArray[0] == '\0')){
+		return (int) ungetArray[0];
+	}
+	
+	
+	while(regptr->fr&PL011_FR_RXFE == 1){
+		continue;
+	}
+	return (int)regptr->dr;
+
+
 
     return SYSERR;
 }
@@ -36,13 +47,19 @@ syscall kgetc(void)
  * kcheckc - check to see if a character is available.
  * @return true if a character is available, false otherwise.
  */
-syscall kcheckc(void)
+syscall kcheckc(void)	//DONE DONE DONE?
 {
     volatile struct pl011_uart_csreg *regptr;
     regptr = (struct pl011_uart_csreg *)0x3F201000;
 
     // TODO: Check the unget buffer and the UART for characters.
 
+	if((ungetArray[0] == '\0') && (regptr->fr&PL011_FR_RXFE == 1)){
+		return 0;
+	} else {
+		return 1;
+	}
+	
     return SYSERR;
 }
 
@@ -51,9 +68,17 @@ syscall kcheckc(void)
  * @param c character to unget.
  * @return c on success, SYSERR on failure.
  */
-syscall kungetc(unsigned char c)
+syscall kungetc(unsigned char c)		//DONE DONE DONE?
 {
     // TODO: Check for room in unget buffer, put the character in or discard.
+	
+	int i;
+	for(i = 0; i < UNGETMAX; i++){
+		if(ungetArray[i] == '\0'){
+			ungetArray[i] = c;
+			return c;
+		}
+	}
 
     return SYSERR;
 }
@@ -79,6 +104,13 @@ syscall kputc(uchar c)
 
     // TODO: Check UART flags register.
     //       Once the Transmitter FIFO is not full, send character c.
+	while(regptr->fr&PL011_FR_TXFF == 1){
+		
+		continue;
+	}
+	
+	
+	return regptr->dr = (int) c;
 
     return SYSERR;
 }
@@ -105,4 +137,4 @@ syscall kprintf(const char *format, ...)
     retval = _doprnt(format, ap, (int (*)(int, int))kputc, 0);
     va_end(ap);
     return retval;
-}
+} 

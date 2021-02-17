@@ -54,7 +54,7 @@ void testcases(void)
 		break;
 		
 		case 'c':
-		kungetc(c);		//places char in buffer array
+		kungetc('c');		//places char in buffer array
 		break;
 		
 		case 'd':
@@ -65,6 +65,10 @@ void testcases(void)
 		kungetc(c);
 		b = kgetc();
 		kprintf("Array contains: %d\n", b);
+		break;
+		
+		case 'f': 	//simply tests kprintf
+		kprintf("Hello World Bing Bong Ding Dong");
 		break;
 		
 

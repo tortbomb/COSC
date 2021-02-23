@@ -31,7 +31,7 @@ _lock_acquire:
 	cmp r1, #SPINLOCK_LOCKED		//if locked?
 	beq _lock_acquire		//retry?
 	
-	strex r2, r1, #SPINLOCK_LOCKED		//set locked??
+	strex r2, r1, [r0]		//set locked??
 	cmp r2, #0							//if fail, restart function?
 	beq _lock_acquire
 

@@ -7,6 +7,14 @@
 
 #include <spinlock.h>
 
+/*
+ * COSC 3250 - Project 4
+ * assembly file for the xinu-hw4 assignment containting the completed _lock_acquire
+ * @author [Sam Torti] [Jack Bielinski]
+ * Instructor [Sabirat Rubya]
+ * TA-BOT:MAILTO [samuel.torti@marquette.edu] [jackson.bielinski@marquette.edu]
+ * */
+
 /**
  * @fn void _lock_acquire(unsigned int *lock)
  *

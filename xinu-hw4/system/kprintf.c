@@ -1,6 +1,6 @@
 /*
- * COSC 3250 - Project 3
- * kprintf file for the xinu-hw3 assignment containting 4 useful functions to interface with UART.
+ * COSC 3250 - Project 4
+ * kprintf file for the xinu-hw4 assignment containting 4 useful functions to interface with UART.
  * @author [Sam Torti] [Jack Bielinski]
  * Instructor [Sabirat Rubya]
  * TA-BOT:MAILTO [samuel.torti@marquette.edu] [jackson.bielinski@marquette.edu]

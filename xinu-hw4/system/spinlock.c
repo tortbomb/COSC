@@ -1,3 +1,11 @@
+/*
+ * COSC 3250 - Project 4
+ * spinlock.c file for the xinu-hw4 assignment containting completed lock acquire and release
+ * @author [Sam Torti] [Jack Bielinski]
+ * Instructor [Sabirat Rubya]
+ * TA-BOT:MAILTO [samuel.torti@marquette.edu] [jackson.bielinski@marquette.edu]
+ * */
+
 /**
  * @file spinlock.c
  * @provides lock_create, lock_free, lock_acquire, lock_release.

@@ -1,3 +1,11 @@
+/*
+ * COSC 3250 - Project 4
+ * testcase file for the xinu-hw4 assignment containting all 5 testcases required
+ * @author [Sam Torti] [Jack Bielinski]
+ * Instructor [Sabirat Rubya]
+ * TA-BOT:MAILTO [samuel.torti@marquette.edu] [jackson.bielinski@marquette.edu]
+ * */
+
 /**
  * @file testcases.c
  * @provides testcases

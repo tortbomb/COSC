@@ -89,6 +89,11 @@ void testcases(void)
         // Expected output is that lock field is locked and core field is 1.
         
         // TODO: Write this testcase.
+		
+		testlock = lock_create();
+		unparkcore(1, (void *)core_acquire, (void *)testlock);
+		print_lockent(testlock);
+		lock_free(testlock);
         break;
 
     case '5':
@@ -102,6 +107,14 @@ void testcases(void)
         // Expected output is that the core field should be 0.
 
         // TODO: Write this testcase.
+		testlock = lock_create();
+		
+		lock_acquire(testlock);
+		for(i = 1; i<4; i++){
+			unparkcore(i, (void *)core_acquire, (void *)testlock);
+		}
+		print_lockent(testlock);
+		
         lock_free(testlock);
         break;
 

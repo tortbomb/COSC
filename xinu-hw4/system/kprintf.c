@@ -140,8 +140,10 @@ syscall kprintf(const char *format, ...)
     int retval;
     va_list ap;
 
+	lock_acquire(serial_lock);
     va_start(ap, format);
     retval = _doprnt(format, ap, (int (*)(int, int))kputc, 0);
+	lock_release(serial_lock);
     va_end(ap);
     return retval;
 } 

@@ -28,12 +28,14 @@ _lock_acquire:
 	//	 	If strex fails, try from the top.
 
 	ldrex r1, [r0]				//load register?
-	cmp r1, #SPINLOCK_LOCKED		//if locked?
+	cmp r1, #SPINLOCK_LOCKED		// if locked?
 	beq _lock_acquire		//retry?
 	
+	
+	add r1, r1, #1		//increment to locked?
 	strex r2, r1, [r0]		//set locked??
-	cmp r2, #0							//if fail, restart function?
-	beq _lock_acquire
+	//cmp r2, #0							//if fail, restart function?
+	//beq _lock_acquire
 
 
 	dmb			/* Data Memory Barrier	*/

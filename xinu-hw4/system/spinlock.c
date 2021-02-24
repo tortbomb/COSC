@@ -92,7 +92,7 @@ syscall lock_release(spinlock_t lock)
 	}
 	
 	_lock_release(&(locktab[lock].lock));
-	locktab[lock].core = '\0';
+	locktab[lock].core = '\0';					//this is wrong
 
     return OK;
 }

@@ -27,6 +27,7 @@ void *getstk(ulong);
  */
 syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 {
+	int c,d;
 	ulong *saddr;               /* stack address                */
 	ulong pid;                  /* stores new process id        */
 	pcb *ppcb;                  /* pointer to proc control blk  */
@@ -54,7 +55,7 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 	ppcb->state = PRSUSP;
 
 	// TODO: Setup PCB entry for new process.
-	ppcb->stkbase = *saddr;
+	ppcb->stkbase = saddr;
 	ppcb->stklen = ssize;
 	ppcb->core_affinity = -1;
 	strcpy((char *)ppcb->name, name);			//use strcpy here, no = needed 
@@ -79,10 +80,58 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 	}
 
 	// TODO: Initialize process context.
-	//
+	
+	
+	
+	ppcb->regs[PREG_PC] = (int) funcaddr;
+	ppcb->regs[PREG_LR] = (int) INITRET;
+	ppcb->regs[PREG_SP] = saddr;
+	/* *--saddr = ppcb->regs[PREG_IP];
+	*--saddr = ppcb->regs[PREG_R11];
+	*--saddr = ppcb->regs[PREG_R10];
+	*--saddr = ppcb->regs[PREG_R9];
+	*--saddr = ppcb->regs[PREG_R8];
+	*--saddr = ppcb->regs[PREG_R7];
+	*--saddr = ppcb->regs[PREG_R6];
+	*--saddr = ppcb->regs[PREG_R5];
+	*--saddr = ppcb->regs[PREG_R4];
+	*--saddr = ppcb->regs[PREG_R3];
+	*--saddr = ppcb->regs[PREG_R2];
+	*--saddr = ppcb->regs[PREG_R1];
+	*--saddr = ppcb->regs[PREG_R0]; */
+	
+	
 	// TODO:  Place arguments into activation record.
 	//        See K&R 7.3 for example using va_start, va_arg and
 	//        va_end macros for variable argument functions.
+	
+	va_start(ap, funcaddr);
+	if(nargs<5){
+		for(c = 0; c < nargs; c++){
+			ppcb->regs[c] = va_arg(ap, int);
+		}
+		va_end(ap);
+		return pid;
+	} else {
+		for(c = 0; c < 4; c++){
+			ppcb->regs[c] = va_arg(ap, int);
+		}
+		for(d = 4; d < nargs; d++){
+			*--saddr = va_arg(ap, int);
+		}
+	}
+	
+	va_end(ap);	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	return pid;
 }

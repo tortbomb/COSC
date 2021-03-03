@@ -83,7 +83,7 @@ void printpcb(int pid)
  */
 void testcases(void)
 {
-    int c, pid;
+    int c, pid, i;
 
     kprintf("0) Test creation of one process\r\n");
     kprintf("1) Test passing of many args\r\n");
@@ -104,13 +104,22 @@ void testcases(void)
         break;
 
     case '1':
-		// Many arguments testcase
+		// Many arguments testcase		
         pid = create((void *)testbigargs, INITSTK, "MAIN1", 8,
                      0x11111111, 0x22222222, 0x33333333, 0x44444444,
                      0x55555555, 0x66666666, 0x77777777, 0x88888888);
+					 
+		pcb *ppcb = NULL;
+		ppcb = &proctab[pid];
+		
         printpcb(pid);
         // TODO: print out stack with extra args
-        // TODO: ready(pid, RESCHED_YES, 0);
+		
+		for(i = 0; i < 25; i++){
+			kprintf("ting = 0x%08X\r\n", (int) ppcb->stkbase - 4 * i);
+		}
+		
+        ready(pid, RESCHED_YES, 0);
         break;
 
     case '2':

@@ -12,6 +12,12 @@
 
 #include <xinu.h>
 
+void infinite(void){
+	while(1=1){
+		continue;
+}
+}
+
 void printpid(int times)
 {
     int i = 0;

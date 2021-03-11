@@ -36,12 +36,22 @@ syscall resched(void)
     //       about the quantums and how aging should behave.
 
 	promote_medium[cpuid]--;
-	promote_low[cpuid]--;
+	
 	
 	if(promote_medium[cpuid] == 0){
+		dequeue(currpid[cpuid]);
+		enqueue(currpid[cpuid], readylist[cpuid][PRIORITY_HIGH]);
+		
+		promote_low[cpuid]--;
+		
 		promote_medium[cpuid] = QUANTUM;
 	}
 	if(promote_low[cpuid] == 0){
+		dequeue(currpid[cpuid]);
+		enqueue(currpid[cpuid], readylist[cpuid][PRIORITY_MED]);
+		
+		
+		
 		promote_low[cpuid] = QUANTUM;
 	}
 

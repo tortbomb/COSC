@@ -13,11 +13,12 @@
 #include <xinu.h>
 
 void infinite(void){
+	uint cpuid = getcpuid();
 	enable();
-	while(1==1){
-		continue;
+	while(1==1){kprintf("This is process %d\r\n", currpid[cpuid]);}
+	
 }
-}
+
 
 void printpid(int times)
 {
@@ -71,7 +72,7 @@ void testcases(void)
 
         // TODO: Create a testcase that demonstrates aging 
 		ready(create
-              ((void *)printpid, INITSTK, PRIORITY_MED, "B", 1, 5)
+              ((void *)infinite, INITSTK, PRIORITY_MED, "B", 0)
                , RESCHED_NO, 0);
 		
 		ready(create

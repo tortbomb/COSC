@@ -40,7 +40,7 @@ syscall resched(void)
 	
 	
 	if(promote_medium[cpuid] <= 0){
-		if(nonempty(readylist[currpid[cpuid]][PRIORITY_MED])){
+		if(nonempty(readylist[cpuid][PRIORITY_MED])){
 			dequeue(currpid[cpuid]);
 			enqueue(currpid[cpuid], readylist[cpuid][PRIORITY_HIGH]);
 		
@@ -56,11 +56,11 @@ syscall resched(void)
 		}
 		
 		
-		promote_low[cpuid] = QUANTUM;
+		promote_low[currpid[cpuid]] = QUANTUM;
 	}
 	
 	//if(preempt[cpuid] <= 0){
-		//preempt[cpuid] = QUANTUM;
+	//	preempt[cpuid] = QUANTUM;
 	//}
 
 #endif

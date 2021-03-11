@@ -13,7 +13,8 @@
 #include <xinu.h>
 
 void infinite(void){
-	while(1=1){
+	enable();
+	while(1==1){
 		continue;
 }
 }
@@ -69,6 +70,16 @@ void testcases(void)
         kprintf("AGING is enabled.\r\n");
 
         // TODO: Create a testcase that demonstrates aging 
+		ready(create
+              ((void *)printpid, INITSTK, PRIORITY_MED, "B", 1, 5)
+               , RESCHED_NO, 0);
+		
+		ready(create
+              ((void *)infinite, INITSTK, PRIORITY_HIGH, "A", 0)
+               , RESCHED_YES, 0); 
+		
+		
+		
 
 
 #else
@@ -76,6 +87,15 @@ void testcases(void)
         kprintf("\r\nAGING is not currently enabled.\r\n");
 
         // TODO: Create a testcase that demonstrates starvation
+		ready(create
+              ((void *)printpid, INITSTK, PRIORITY_LOW, "B", 1, 5)
+               , RESCHED_NO, 0);
+		
+		ready(create
+              ((void *)infinite, INITSTK, PRIORITY_HIGH, "A", 0)
+               , RESCHED_YES, 0);
+			   
+		
 
 
 #endif
@@ -88,7 +108,16 @@ void testcases(void)
         kprintf("\r\nPreemption is enabled.\r\n");
 
         // TODO: Create a testcase that demonstrates preemption
-
+		
+		ready(create
+              ((void *)infinite, INITSTK, PRIORITY_HIGH, "A", 0)
+               , RESCHED_NO, 0);
+			   
+		ready(create
+              ((void *)printpid, INITSTK, PRIORITY_HIGH, "B", 1, 5)
+               , RESCHED_YES, 0);
+			   
+		
 
 #else
         kprintf("\r\nPreemption is not currently enabled...\r\n");

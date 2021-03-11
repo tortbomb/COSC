@@ -24,7 +24,7 @@ syscall kgetc(void);
 syscall kcheckc(void);
 
 /* Scheduler function prototypes */
-syscall create(void *funcaddr, ulong ssize, ulong priority, char *name,
+syscall create(void *funcaddr, ulong ssize, int priority, char *name,
                ulong nargs, ...);
 syscall kill(pid_typ pid);
 syscall ready(pid_typ pid, bool resched, uint core);

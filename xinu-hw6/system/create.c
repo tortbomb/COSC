@@ -34,7 +34,7 @@ void *getstk(ulong);
  * @param nargs    number of arguments that follow
  * @return the new process id
  */
-syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
+syscall create(void *funcaddr, ulong ssize, int priority, char *name, ulong nargs, ...)
 {
 	int c,d;
 	ulong *saddr;               /* stack address                */
@@ -68,6 +68,7 @@ syscall create(void *funcaddr, ulong ssize, char *name, ulong nargs, ...)
 	ppcb->stklen = ssize;
 	ppcb->core_affinity = -1;
 	strcpy((char *)ppcb->name, name);			//use strcpy here, no = needed 
+	ppcb->priority = priority;
 	
 
 	/* Initialize stack with accounting block. */

@@ -37,6 +37,11 @@ void *malloc(ulong size)
       */  
 
 	ulong newsize = size + sizeof(struct memblock);
+	getmem(newsize);	//does not handle SYSERR
+	
+	
+	pmem->length = newsize;
+	pmem->next = NULL;
 
 
     return (void *)(pmem + 1);  /* +1 to skip accounting info */

@@ -46,12 +46,47 @@ void testcases(void)
     uchar c;
 
     kprintf("===TEST BEGIN===\r\n");
-    kprintf("0) Test priority scheduling\r\n");
-    kprintf("\'A\') Aging / Starvation testcase\r\n");
-    kprintf("\'P\') Preemption testcase\r\n");
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//kprintf("0) Test priority scheduling\r\n");					//i did this, this is old tests
+    //kprintf("\'A\') Aging / Starvation testcase\r\n");
+    //kprintf("\'P\') Preemption testcase\r\n");
 
     // TODO: Test your operating system!
 
+	/*
     c = kgetc();
     switch (c)
     {
@@ -136,7 +171,7 @@ void testcases(void)
 
     default:
         break;
-    }
+    }*/																
 
     kprintf("\r\n===TEST END===\r\n");
     return;

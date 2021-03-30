@@ -24,5 +24,13 @@ syscall free(void *ptr)
      *      3) call freemem on the block with its length
      */
 
+	block->next = ptr;
+	ptr = ptr - 1;
+	ulong nbytes = ptr->length;
+	freemem(ptr, nbytes);
+	//is this all good? i sure dont know
+	
+
+
     return OK;
 }

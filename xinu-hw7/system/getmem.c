@@ -51,22 +51,32 @@ void *getmem(ulong nbytes)
 	lock_acquire(freelist[cpuid].memlock);
 	curr = freelist[cpuid].head;
 	prev = freelist[cpuid].base;
-	while(curr.next != NULL){
-		if(curr.length < nbytes){
+	while(curr->next != NULL){
+		if(curr->length < nbytes){
 			prev = curr;
-			curr = curr.next;
+			curr = curr->next;
 			continue;
 		}
-		if(curr.length >= nbytes){
-			if(curr.length == nbytes){
+		if(curr->length >= nbytes){
+			if(curr->length == nbytes){
+				prev->next = NULL;		//delete node from freelist, idk if right
+				
+				
 				lock_release(freelist[cpuid].memlock);
-				//delete node from freelist
-				//return memory
+				return (void *)curr;
 			}
 			// SPLITTING CASE
-			//create a node with remaining size
-			//decrement the length for current core
-			//return memory
+			else {
+				leftover->length = freelist[cpuid].length - nbytes;			//create a node with remaining size
+				leftover->next = NULL;
+				freelist[cpuid].length = freelist[cpuid].length - nbytes;			//decrement the length for current core
+				prev->next = leftover;				
+				
+				
+				
+				lock_release(freelist[cpuid].memlock);
+				return (void *)curr;				
+				
 		}
 	}
 

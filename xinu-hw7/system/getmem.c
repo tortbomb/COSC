@@ -77,9 +77,11 @@ void *getmem(ulong nbytes)
 				lock_release(freelist[cpuid].memlock);
 				return (void *)curr;				
 				
+			}
 		}
 	}
 
     restore(im);
     return (void *)SYSERR;
 }
+

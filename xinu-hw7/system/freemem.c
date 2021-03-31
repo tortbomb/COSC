@@ -52,12 +52,6 @@ syscall freemem(void *memptr, ulong nbytes)
      *      - Coalesce with next block if adjacent
      */
 
-
-	
-
-
-
-
 	restore(im);
     return OK;
 }

@@ -27,18 +27,32 @@ void infinite(void){
 
 void print_freelist(void)
 {
+	int cpuid;
+	cpuid = getcpuid();
+	
 	register memblk *prev, *curr;
-	int i = 0;
-	for(i = 0; i < 4, i++){
+	
+	ulong this, cur;
+	this = (ulong)freelist[cpuid].head;
+
+	kprintf("Current node address: %d\n", this);
+	
+	/*int i = 0;
+	for(i = 0; i < 4; i++){
 		curr = freelist[i].head;
 		prev = freelist[i].base;
+		
+		//cur = (ulong)freelist[i].head;
+		//pre = (ulong)freelist[i].base;
 			while(curr->next != NULL){
-				kprintf("Current node address: %p \n", curr);
+				cur = (ulong)curr;
+				kprintf("Current node address: %p \n", cur);
 				prev = curr;
 				curr = curr->next;
+				
 			}
 	}
-		
+		*/
 
 
 
@@ -66,7 +80,9 @@ void testcases(void)
     uchar c;
 
     kprintf("===TEST BEGIN===\r\n");
-   
+	//print_freelist();
+	//getmem(10);
+	//print_freelist();
 	
 	
 	

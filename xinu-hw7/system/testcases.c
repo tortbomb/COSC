@@ -25,9 +25,28 @@ void infinite(void){
 }
 
 
-void printpid(int times)
+void print_freelist(void)
 {
-    int i = 0;
+	register memblk *prev, *curr;
+	int i = 0;
+	for(i = 0; i < 4, i++){
+		curr = freelist[i].head;
+		prev = freelist[i].base;
+			while(curr->next != NULL){
+				kprintf("Current node address: %p \n", curr);
+				prev = curr;
+				curr = curr->next;
+			}
+	}
+		
+
+
+
+
+
+	//printpid below
+
+    /*int i = 0;
     uint cpuid = getcpuid();
 
     enable();
@@ -36,6 +55,7 @@ void printpid(int times)
         kprintf("This is process %d\r\n", currpid[cpuid]);
         udelay(10);
     }
+	*/
 }
 
 /**
@@ -46,13 +66,7 @@ void testcases(void)
     uchar c;
 
     kprintf("===TEST BEGIN===\r\n");
-    
-	
-	
-	
-	
-	
-	
+   
 	
 	
 	

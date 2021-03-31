@@ -43,14 +43,17 @@ syscall kill(int pid)
     switch (ppcb->state)
     {
     case PRCURR:
-        ppcb->state = PRFREE;   /* suicide */
+		ppcb->state = PRFREE;   /* suicide */
+		freemem((void *)ppcb->stkbase, (ulong)ppcb->stklen);
         resched();
 
     case PRREADY:
         remove(pid);
+		freemem((void *)ppcb->stkbase, (ulong)ppcb->stklen);
 
     default:
         ppcb->state = PRFREE;
+		freemem((void *)ppcb->stkbase, (ulong)ppcb->stklen);
     }
 
     return OK;

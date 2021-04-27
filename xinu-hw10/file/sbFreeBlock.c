@@ -39,6 +39,7 @@ devcall sbFreeBlock(struct superblock *psuper, int block)
     {
         return SYSERR;
     }
+	diskfd = phw - devtab;
 	freeblk = psuper->sb_freelst;
     if (NULL == freeblk)
     {
@@ -47,14 +48,39 @@ devcall sbFreeBlock(struct superblock *psuper, int block)
     }
 	
 	// Updating the free list must be mutually exclusive.
-    //wait(psuper->sb_freelock);
+    wait(psuper->sb_freelock);
+	//if room in freeblock
+	if (freeblk->fr_count < FREEBLOCKMAX){
+		
+		freeblk->fr_free[freeblk->fr_count] = block;
+		freeblk->fr_count++;
+		
+		//below is copied from getBlock
+		// Update this free block record on disk.
+        free2 = freeblk->fr_next;
+        if (NULL == freeblk->fr_next)
+        {
+            freeblk->fr_next = 0;
+        }
+        else
+        {
+            freeblk->fr_next =
+                (struct freeblock *)freeblk->fr_next->fr_blocknum;
+        }
+        seek(diskfd, freeblk->fr_blocknum);
+        if (SYSERR == write(diskfd, freeblk, sizeof(struct freeblock)))
+        {
+            return SYSERR;
+        }
+        freeblk->fr_next = free2;
+		
+	} else { //freelist is full
+		
+	}
 	
 	
 	
-	
-	
-	
-	
+	signal(psuper->sb_freelock);
 	
     return SYSERR;
 }

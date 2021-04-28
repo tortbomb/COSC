@@ -16,5 +16,14 @@ command xsh_test(int nargs, char *args[])
 {
     //TODO: Test your O/S.
     printf("This is where you should put some testing code.\n");
+	
+	//struct superblock biggo = sbOpen(disktab[0]);
+	
+	printf("TESTING GET BLOCK BABEY\n");
+	//struct superblock *biggo;// = sbInit(biggo, int diskfd)
+	
+	int dummo = sbGetBlock(supertab);
+	sbFreeBlock(supertab, dummo);
+	
     return OK;
 }

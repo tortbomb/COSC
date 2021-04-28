@@ -43,7 +43,7 @@ devcall sbFreeBlock(struct superblock *psuper, int block)
 	freeblk = psuper->sb_freelst;
     if (NULL == freeblk)
     {
-        printf("sbGetFree() ERROR: Superblock free list is empty!\n");
+        //printf("sbGetFree() ERROR: Superblock free list is empty!\n");
         return SYSERR;
     }
 	
@@ -54,6 +54,7 @@ devcall sbFreeBlock(struct superblock *psuper, int block)
 		
 		freeblk->fr_free[freeblk->fr_count] = block;
 		freeblk->fr_count++;
+		freeblk->fr_free[freeblk->fr_count] = 0;
 		
 		//below is copied from getBlock
 		// Update this free block record on disk.
@@ -74,7 +75,49 @@ devcall sbFreeBlock(struct superblock *psuper, int block)
         }
         freeblk->fr_next = free2;
 		
+		
 	} else { //freelist is full
+		
+		if(NULL == freeblk->fr_next)
+		{
+			//if next block is null, were screwed, no room to add
+			
+            return SYSERR;
+		}
+		//this is also just copied
+		// Copy over contents of next free block list segment,
+        //  and then give out the block containing that segment. (put in the block. this comment is copied)
+        free2 = freeblk->fr_next;
+        free2->fr_free[free2->fr_count] = block;		//except for this
+		free2->fr_count++;
+        for (i = free2->fr_count - 1; i >= 0; i--) 	
+        {
+            freeblk->fr_free[i] = free2->fr_free[i];
+        }
+        freeblk->fr_count = free2->fr_count;
+        freeblk->fr_next = free2->fr_next;
+        free(free2);
+
+        // Update this free block record on disk.
+        free2 = freeblk->fr_next;
+        if (NULL == freeblk->fr_next)
+        {
+            freeblk->fr_next = 0;
+        }
+        else
+        {
+            freeblk->fr_next =
+                (struct freeblock *)freeblk->fr_next->fr_blocknum;
+        }
+        seek(diskfd, freeblk->fr_blocknum);
+        if (SYSERR == write(diskfd, freeblk, sizeof(struct freeblock)))
+        {
+            return SYSERR;
+        }
+        freeblk->fr_next = free2;
+		
+		
+	
 		
 	}
 	
@@ -82,5 +125,5 @@ devcall sbFreeBlock(struct superblock *psuper, int block)
 	
 	signal(psuper->sb_freelock);
 	
-    return SYSERR;
+    return OK;
 }
